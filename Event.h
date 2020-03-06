@@ -42,6 +42,7 @@ public:
   uint8_t pin;
   uint8_t pinState;
   void (*callback)(void);
+  void (*digitalWritePtr)(const uint8_t, const bool);
   unsigned long lastEventTime;
   int count;
 };

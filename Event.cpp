@@ -52,7 +52,7 @@ void Event::update(unsigned long now)
 
 			case EVENT_OSCILLATE:
 				pinState = ! pinState;
-				digitalWrite(pin, pinState);
+				digitalWritePtr ? (*digitalWritePtr)(pin, pinState) : digitalWrite(pin, pinState);
 				break;
 		}
 		lastEventTime = now;

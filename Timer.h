@@ -37,6 +37,11 @@ class Timer
 public:
   Timer(void);
 
+  /**
+   * Configure Timer to use an alternative digitalWrite function.
+   */
+  Timer(void (*write)(const uint8_t, const bool));
+
   int8_t every(unsigned long period, void (*callback)(void));
   int8_t every(unsigned long period, void (*callback)(void), int repeatCount);
   int8_t after(unsigned long duration, void (*callback)(void));
@@ -61,6 +66,7 @@ public:
 protected:
   Event _events[MAX_NUMBER_OF_EVENTS];
   int8_t findFreeEventIndex(void);
+  void (*digitalWritePtr)(const uint8_t, const bool);
 
 };
 

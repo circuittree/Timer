@@ -33,6 +33,11 @@ Timer::Timer(void)
 {
 }
 
+Timer::Timer(void (*write)(const uint8_t, const bool))
+{
+  digitalWritePtr = write;
+}
+
 int8_t Timer::every(unsigned long period, void (*callback)(), int repeatCount)
 {
 	int8_t i = findFreeEventIndex();
@@ -66,7 +71,8 @@ int8_t Timer::oscillate(uint8_t pin, unsigned long period, uint8_t startingValue
 	_events[i].pin = pin;
 	_events[i].period = period;
 	_events[i].pinState = startingValue;
-	digitalWrite(pin, startingValue);
+	digitalWritePtr ? (*digitalWritePtr)(pin, startingValue) : digitalWrite(pin, startingValue);
+	_events[i].digitalWritePtr = digitalWritePtr;
 	_events[i].repeatCount = repeatCount * 2; // full cycles not transitions
 	_events[i].lastEventTime = millis();
 	_events[i].count = 0;
